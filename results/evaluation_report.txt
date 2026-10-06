@@ -1,0 +1,70 @@
+Final model: XGBoost   tuned threshold: 0.728
+
+--- Per-class classification report (tuned threshold) ---
+              precision    recall  f1-score   support
+
+not phishing      0.950     0.967     0.958    136375
+    phishing      0.876     0.820     0.847     38910
+
+    accuracy                          0.934    175285
+   macro avg      0.913     0.893     0.903    175285
+weighted avg      0.933     0.934     0.933    175285
+
+Confusion matrix (rows = actual, cols = predicted):
+    not-phishing: TN=131,843  FP=4,532
+    phishing    : FN=6,998  TP=31,912
+ROC-AUC: 0.9738   PR-AUC: 0.9325
+
+--- False negatives (missed phishing): 6,998 ---
+Lowest-scoring missed phishing URLs:
+  score=0.000  len= 97  subdom=0  kw=0  eh.net/book_reviews/culture-misfortune-interpretive-history-textile-unionism-united-s
+  score=0.001  len= 84  subdom=0  kw=0  https://clubevendas.com/product/pneu-aro-14-goodyear-175-70r14-88t-direction-touring
+  score=0.001  len=147  subdom=1  kw=9  http://www.eov.cl/noticias/imagenes/paypal.com.au/https/cgi-bin/webscrcmd=_login-run/
+  score=0.002  len= 57  subdom=0  kw=0  24ways.org/2009/have-a-field-day-with-html5-forms/
+  score=0.002  len= 45  subdom=0  kw=0  worldcat.org/identities/lccn-n77-18721
+  score=0.002  len= 46  subdom=0  kw=0  worldcat.org/identities/lccn-n87-883336
+  score=0.003  len= 72  subdom=0  kw=0  esj.com/articles/2006/11/29/mdm-enthuses-confuses-bi-dm-pros.aspx
+  score=0.003  len= 50  subdom=0  kw=0  tud.at/programm/apache-ssl-win32-howto.php3
+Pattern: most missed phishing URLs are short plain domains with no IP, no evasion markers and few suspicious words, so they look just like normal URLs - you can't catch them from the URL alone.
+
+--- False positives (not-phishing flagged): 4,532 ---
+Breakdown of false positives by their original class:
+    benign       3,476  (76.7% of FPs)
+    defacement   806  (17.8% of FPs)
+    malware      212  (4.7% of FPs)
+    legitimate   38  (0.8% of FPs)
+  Note: 1,018 of 4,532 false positives (22.5%) are malware or defacement URLs - still dangerous, so flagging them is not really a mistake. Only the benign/legitimate FPs are a real usability cost.
+Highest-scoring benign/legitimate false positives:
+  score=1.000  subdom=1  dots=2  www.webmail-upgrade.tk
+  score=0.999  subdom=2  dots=3  runescape.com.vvs-logins.tk
+  score=0.999  subdom=0  dots=1  http://bmi.ir/wEPDwUJODU5NTc0MDkwD2QWAmYPZBYCAgMPZBYCAgEPZBYCAgEPZBYCAgEPZBYCAgEPFgIe
+  score=0.999  subdom=2  dots=3  freegames.wip.co.il
+  score=0.998  subdom=1  dots=2  www.vbv-visamastercard-securedbank.net
+  score=0.998  subdom=1  dots=2  steamcommunity-giveaway.my3gb.com
+  score=0.998  subdom=1  dots=2  ntl208h101-125-245.nt.net:84/
+  score=0.998  subdom=1  dots=2  paypal-konflikt-loesung.e7.to
+
+--- Harder evaluation 1: phishing recall split by evasion markers ---
+    with evasion markers  :  3,520 URLs  recall=0.980
+    plain-looking         : 35,390 URLs  recall=0.804
+Recall is high on URLs with an obvious trick and lower on plain ones, which matches the false negatives above.
+
+--- Harder evaluation 2: hand-built brand-impersonation URLs (not in the dataset) ---
+  [OK ] score=0.980 -> phishing     (true phishing ) http://paypal.com.secure-login.verify-account.tk/signin
+  [OK ] score=0.991 -> phishing     (true phishing ) http://192.168.10.5/wp-admin/appleid/verify.php
+  [OK ] score=0.903 -> phishing     (true phishing ) https://xn--pypal-4ve.com/account/update
+  [OK ] score=0.996 -> phishing     (true phishing ) http://bit.ly/3xRandomRedirect
+  [OK ] score=0.498 -> not phishing (true benign   ) https://www.wikipedia.org/wiki/Machine_learning
+  [OK ] score=0.187 -> not phishing (true benign   ) https://github.com/sasinduuu/CompInnovation
+  [MISS] score=0.805 -> phishing     (true benign   ) https://www.commbank.com.au/personal/login
+
+--- Harder evaluation 3: cross-dataset generalisation (train on one dataset, test on the other) ---
+  train=base     -> test=phiusiil: precision=0.376 recall=0.809 f1=0.514 roc_auc=0.197
+  train=phiusiil -> test=base    : precision=0.147 recall=0.999 f1=0.256 roc_auc=0.309
+The cross-dataset ROC-AUC drops below 0.5, which shows there is big domain shift between the two datasets: 'not phishing' means different things in each (the base set has long defacement/malware URLs, PhiUSIIL's legitimate URLs are short and clean), so a model trained on one doesn't transfer to the other. This is why we train on both, and it's an honest sign that a single-dataset model wouldn't generalise to new data.
+
+--- Documented limitations ---
+1. URL-only analysis can't catch phishing on a plain new domain with no obvious clues - you'd need the page content or the domain age.
+2. No timestamps in the data, so we can't do a proper time-based test; phishing changes over time so live results would be lower.
+3. Labels come from two public datasets and have some noise. Combining two sources helps, but the cross-dataset test shows some shift remains.
+4. Shorteners hide the real link - the model can only flag that a shortener was used, not where it goes.

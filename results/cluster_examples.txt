@@ -1,0 +1,31 @@
+Cluster 0  (32,012 URLs, 16.5% of phishing)
+  distinguishing features: has_suspicious_extension, is_shortened, path_length
+    - http://www.marketingbyinternet.com/mo/e56508df639f6ce7d55c81ee3fcd5ba8/
+    - https://docs.google.com/spreadsheet/viewform?formkey=dGg2Z1lCUHlSdjllTVNRUW50TFIzSkE6MQ
+    - http://www.bimabn.com/1-configurazione-supporto-apple.store-contatta/c/Apple-id/3d465e25b47e6bc23ae55f5de40e1b
+    - http://www.designeremdoces.com/components/com_contact/ggdrives/
+    - http://drive-google-com.fanalav.com/6a7ec96d6a4b8b887e9f9ace81b40a99/
+
+Cluster 1  (31,735 URLs, 16.3% of phishing)
+  distinguishing features: has_punycode, lookalike_char_count, num_digits_in_domain
+    - signin.eby.de.zukruygxctzmmqi.civpro.co.za
+    - http://fb.com.accounts.login.userid.343441.fbsbk.com/
+    - account-security-centre20181712.000webhostapp.com
+    - http://us.diablo.net.login.xml.sc-ueo.in/login.html
+    - servericer.wellsfarg0t.com.aquisites.net
+
+Cluster 2  (124,422 URLs, 64.0% of phishing)
+  distinguishing features: is_shortened, has_punycode, digit_ratio
+    - br-icloud.com.br
+    - retajconsultancy.com
+    - alexpay2.beget.tech
+    - facebook.unitedcolleges.net
+    - halkbankparaf-para.com
+
+Cluster 3  (6,379 URLs, 3.3% of phishing)
+  distinguishing features: num_dots, num_hyphens, num_special_chars
+    - http://www.martin-busker.de/administrator/help/en-GB/css/Facture/c4d12146ebce8e1684d3542308399779/8fa39dab95ed
+    - http://www.naylorantiques.com/d0y_qx_6_l_6hqo_ewkbketxbu1u7oy10gmkyfrgwnm8llrdhlxcps_ale1_d9b6mij__8tja_b1t__h
+    - http://appleid.apple.co.uk.cgi-bin.webobjects.myappleid.woa.verify9.eu-id3.net/identify-customer=7gqIFbqj8arzS
+    - http://www.itfindia.org/confirmation-account/c85652703f710065c1255aa03a9aefae/53ca17bd02579e9464e40735557fdfeb
+    - http://appleid.apple.co.uk.cgi-bin.webobjects.myappleid.woa.verify2.srv-woa1.com/identify-customer=FNMS8Sl674L

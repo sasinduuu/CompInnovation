@@ -1,0 +1,12 @@
+# PhishGuard - Python dependencies
+# Tested with Python 3.11-3.13. Version floors are set to the first release
+# with the APIs used; newer versions in the same major line also work.
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+xgboost>=2.0
+lightgbm>=4.0
+matplotlib>=3.7
+scipy>=1.10
+# Optional: only needed to run the test suite with `pytest`.
+# pytest>=7.0
